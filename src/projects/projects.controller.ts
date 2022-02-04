@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateProjectCommand } from './commands/create-project.command';
+import { DeleteProjectCommand } from './commands/delete-project.command';
 import { UpdateProjectCommand } from './commands/update-project.command';
-import { CreateProjectForm, ProjectDto } from './projects.dtos';
+import { CreateProjectForm, ProjectDto, UpdateProjectForm } from './projects.dtos';
 import { GetAllProjectsQuery } from './queries/get-projects.query';
 import { GetSingleProjectQuery } from './queries/get-single-project';
 
@@ -32,7 +33,13 @@ export class ProjectsController {
     @Put(':projectId')
     async updateProject(
         @Param('projectId') projectId: string,
-        @Body() form: CreateProjectForm): Promise<ProjectDto> {
+        @Body() form: UpdateProjectForm): Promise<ProjectDto> {
         return await this.commandBus.execute(new UpdateProjectCommand(projectId, form))
+    }
+
+    @Delete(':projectId')
+    async deleteProject(
+        @Param('projectId') projectId: string): Promise<void> {
+        return await this.commandBus.execute(new DeleteProjectCommand(projectId))
     }
 }

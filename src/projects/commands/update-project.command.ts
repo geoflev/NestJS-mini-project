@@ -1,5 +1,7 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { Project } from "../project.schema";
 import { UpdateProjectForm } from "../projects.dtos";
+import { ProjectsService } from "../projects.service";
 
 export class UpdateProjectCommand {
     readonly projectId: string;
@@ -12,7 +14,9 @@ export class UpdateProjectCommand {
 
 @CommandHandler(UpdateProjectCommand)
 export class UpdateProjectCommandHandler implements ICommandHandler<UpdateProjectCommand>{
-    execute(command: UpdateProjectCommand): Promise<any> {
-        throw new Error("Method not implemented.");
+    constructor(private readonly repo: ProjectsService) { }
+    
+    execute(command: UpdateProjectCommand): Promise<Project> {
+        return this.repo.updateProject(command.projectId, command.form);
     }
 }
