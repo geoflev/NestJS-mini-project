@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
-import { CommandBus, CqrsModule, QueryBus } from '@nestjs/cqrs';
+import { CqrsModule } from '@nestjs/cqrs';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CommandHandlers } from './commands';
 import { Project, ProjectSchema } from './project.schema';
 import { ProjectsController } from './projects.controller';
 import { ProjectsService } from './projects.service';
 import { QueryHandlers } from './queries';
-import { GetProjectsQueryHandler } from './queries/get-projects.query';
 
 @Module({
   imports: [

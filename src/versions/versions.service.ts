@@ -6,7 +6,7 @@ import { CreateVersionForm, UpdateVersionForm } from "./versions.dtos";
 
 @Injectable()
 export class VersionsService {
-    constructor(@InjectModel(Version.name) private versionModel: Model<VersionDocument>) {}
+    constructor(@InjectModel(Version.name) private versionModel: Model<VersionDocument>) { }
 
     async findAll(): Promise<Version[]> {
         return this.versionModel.find().exec();

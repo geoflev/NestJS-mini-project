@@ -4,12 +4,12 @@ export interface VersionDto {
     description?: string;
 }
 
-export interface CreateVersionForm{
+export interface CreateVersionForm {
     name: string;
     description: string;
 }
 
-export interface UpdateVersionForm{
+export interface UpdateVersionForm {
     name: string;
     description: string;
 }

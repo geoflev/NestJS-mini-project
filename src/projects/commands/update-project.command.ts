@@ -15,7 +15,7 @@ export class UpdateProjectCommand {
 @CommandHandler(UpdateProjectCommand)
 export class UpdateProjectCommandHandler implements ICommandHandler<UpdateProjectCommand>{
     constructor(private readonly repo: ProjectsService) { }
-    
+
     execute(command: UpdateProjectCommand): Promise<Project> {
         return this.repo.updateProject(command.projectId, command.form);
     }
