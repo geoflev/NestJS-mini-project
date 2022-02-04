@@ -1,10 +1,10 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { CreateProjectForm } from "../projects.dtos";
+import { CreateProjectDto } from "../dtos/create-project.dto";
 import { ProjectsService } from "../projects.service";
 
 export class CreateProjectCommand {
-    readonly form: CreateProjectForm;
-    constructor(form: CreateProjectForm) {
+    readonly form: CreateProjectDto;
+    constructor(form: CreateProjectDto) {
         this.form = form;
     }
 }

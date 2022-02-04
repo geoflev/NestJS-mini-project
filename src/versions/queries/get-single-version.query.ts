@@ -12,5 +12,4 @@ export class GetSingleVersionQueryHandler implements IQueryHandler<GetSingleVers
     execute(query: GetSingleVersionQuery): Promise<any> {
         return this.repo.findById(query.id);
     }
-
 }

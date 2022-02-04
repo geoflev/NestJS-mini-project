@@ -1,12 +1,12 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { UpdateProjectDto } from "../dtos/update-project.dto";
 import { Project } from "../project.schema";
-import { UpdateProjectForm } from "../projects.dtos";
 import { ProjectsService } from "../projects.service";
 
 export class UpdateProjectCommand {
     readonly projectId: string;
-    readonly form: UpdateProjectForm;
-    constructor(projectId: string, form: UpdateProjectForm) {
+    readonly form: UpdateProjectDto;
+    constructor(projectId: string, form: UpdateProjectDto) {
         this.projectId = projectId;
         this.form = form;
     }

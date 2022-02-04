@@ -1,11 +1,11 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { CreateVersionDto } from "../dtos/create-version.dto";
 import { Version } from "../version.schema";
-import { CreateVersionForm } from "../versions.dtos";
 import { VersionsService } from "../versions.service";
 
 export class CreateVersionCommand {
-    readonly form: CreateVersionForm;
-    constructor(form: CreateVersionForm) {
+    readonly form: CreateVersionDto;
+    constructor(form: CreateVersionDto) {
         this.form = form;
     }
 }
