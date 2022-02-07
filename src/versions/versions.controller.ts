@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { CreateVersionCommand } from "./commands/create-version.command";
 import { DeleteVersionCommand } from "./commands/delete-version.command";
@@ -11,35 +11,41 @@ import { GetAllVersionsQuery } from "./queries/get-versions.query";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
 @ApiTags('versions')
-@Controller('api/versions')
+@Controller('api/project/')
 export class VersionsController {
     constructor(
         private commandBus: CommandBus,
         private queryBus: QueryBus
     ) { }
 
-    @Get()
+    @Get(':projectId/versions')
     @ApiOperation({ summary: 'List all versions' })
-    async getVersions(): Promise<VersionDto[]> {
-        return await this.queryBus.execute(new GetAllVersionsQuery());
+    async getVersions(@Param('projectId') projectId: string): Promise<VersionDto[]> {
+        return await this.queryBus.execute(new GetAllVersionsQuery(projectId));
     }
 
-    @Get(':id')
-    @ApiOperation({ summary: 'Get single version' })
-    async getSingleVersion(@Param('id') id: string): Promise<VersionDto> {
-        return await this.queryBus.execute(new GetSingleVersionQuery(id));
-    }
+    // @Get(':id')
+    // @ApiOperation({ summary: 'Get single version' })
+    // async getSingleVersion(@Param('id') id: string): Promise<VersionDto> {
+    //     return await this.queryBus.execute(new GetSingleVersionQuery(id));
+    // }
 
-    @Post()
+    @Post(':projectId/versions')
     @ApiOperation({ summary: 'Create version' })
-    async createVersion(@Body() form: CreateVersionDto): Promise<VersionDto> {
-        return await this.commandBus.execute(new CreateVersionCommand(form));
+    async createVersion(
+        @Param('projectId') projectId: string,
+        @Body() form: CreateVersionDto
+    ): Promise<VersionDto> {
+        return await this.commandBus.execute(new CreateVersionCommand(form, projectId));
     }
 
-    @Put(':id')
+    @Put(':projectId/version/:versionId')
     @ApiOperation({ summary: 'Update version' })
-    async updateVersion(@Body() form: UpdateVersionDto, @Param('id') id: string) {
-        return await this.commandBus.execute(new UpdateVersionCommand(id, form));
+    async updateVersion(
+        @Body() form: UpdateVersionDto, 
+        @Param('projectId') projectId: string,
+        @Param('versionId') versionId: string) {
+        return await this.commandBus.execute(new UpdateVersionCommand(projectId, versionId, form));
     }
 
     @Delete(':id')

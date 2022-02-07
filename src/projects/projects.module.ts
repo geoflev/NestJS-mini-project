@@ -9,7 +9,9 @@ import { QueryHandlers } from './queries';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Project.name, schema: ProjectSchema }]),
+    MongooseModule.forFeature([
+      { name: Project.name, schema: ProjectSchema }
+    ]),
     CqrsModule
   ],
   controllers: [ProjectsController],
@@ -17,6 +19,7 @@ import { QueryHandlers } from './queries';
     ProjectsService,
     ...QueryHandlers,
     ...CommandHandlers
-  ]
+  ],
+  exports: [ProjectsService]
 })
 export class ProjectsModule { }

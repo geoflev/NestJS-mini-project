@@ -1,4 +1,8 @@
+import { NotFoundException } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { Project, ProjectDocument } from "../project.schema";
 import { ProjectsService } from "../projects.service";
 
 export class DeleteProjectCommand {
@@ -10,10 +14,14 @@ export class DeleteProjectCommand {
 
 @CommandHandler(DeleteProjectCommand)
 export class DeleteProjectCommandHandler implements ICommandHandler<DeleteProjectCommand>{
-    constructor(private readonly repo: ProjectsService) { }
+    constructor(@InjectModel(Project.name) private projectModel: Model<ProjectDocument>) { }
 
-    execute(command: DeleteProjectCommand): Promise<any> {
-        return this.repo.deleteProject(command.projectId);
+    async execute(command: DeleteProjectCommand): Promise<void> {
+        try {
+            await this.projectModel.findByIdAndRemove(command.projectId);
+        } catch {
+            throw new NotFoundException('Project to be deleted was not found!')
+        }
     }
 
 

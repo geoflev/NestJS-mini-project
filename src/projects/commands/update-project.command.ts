@@ -1,6 +1,9 @@
+import { NotFoundException } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
 import { UpdateProjectDto } from "../dtos/update-project.dto";
-import { Project } from "../project.schema";
+import { Project, ProjectDocument } from "../project.schema";
 import { ProjectsService } from "../projects.service";
 
 export class UpdateProjectCommand {
@@ -14,9 +17,21 @@ export class UpdateProjectCommand {
 
 @CommandHandler(UpdateProjectCommand)
 export class UpdateProjectCommandHandler implements ICommandHandler<UpdateProjectCommand>{
-    constructor(private readonly repo: ProjectsService) { }
+    constructor(@InjectModel(Project.name) private projectModel: Model<ProjectDocument>) { }
 
-    execute(command: UpdateProjectCommand): Promise<Project> {
-        return this.repo.updateProject(command.projectId, command.form);
+    async execute(command: UpdateProjectCommand): Promise<Project> {
+        try {
+            return await this.projectModel.findByIdAndUpdate(
+                command.projectId,
+                {
+                    name: command.form.name,
+                    description: command.form.description
+                },
+                {
+                    new: true
+                });
+        } catch {
+            throw new NotFoundException('Project to be updated was not found!');
+        }
     }
 }

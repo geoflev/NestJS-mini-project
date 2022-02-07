@@ -1,14 +1,15 @@
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
-import { Project } from "../project.schema";
-import { ProjectsService } from "../projects.service";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { Project, ProjectDocument } from "../project.schema";
 
 export class GetAllProjectsQuery { }
 
 @QueryHandler(GetAllProjectsQuery)
 export class GetProjectsQueryHandler implements IQueryHandler<GetAllProjectsQuery>{
-    constructor(private readonly repo: ProjectsService) { }
+    constructor(@InjectModel(Project.name) private projectModel: Model<ProjectDocument>) { }
 
     async execute(query: GetAllProjectsQuery): Promise<Project[]> {
-        return this.repo.findAll();
+        return this.projectModel.find().exec();
     }
 }
