@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Project, ProjectDocument } from './project.schema';
 import { CreateProjectDto } from './dtos/create-project.dto';
@@ -15,20 +15,41 @@ export class ProjectsService {
 
   async create(createProjectForm: CreateProjectDto): Promise<Project> {
     const createdProj = new this.projectModel(createProjectForm);
+
     return createdProj.save();
   }
 
-  async findById(id: string): Promise<Project> {
-    return this.projectModel.findOne({ id });
+  async findById(id: string, includeVersions: boolean): Promise<Project> {
+    const project = await this.projectModel.findOne({ id });
+    if (!includeVersions) {
+      const projectDest = { id: project.id, name: project.name, description: project.description };
+      return projectDest;
+    }
+
+    return project;
   }
 
   async updateProject(id: string, updateForm: UpdateProjectDto): Promise<Project> {
-    return this.projectModel.findByIdAndUpdate(id, { name: updateForm.name, description: updateForm.description }, {
-      new: true
-    });
+    try {
+      return await this.projectModel.findByIdAndUpdate(
+        id,
+        {
+          name: updateForm.name,
+          description: updateForm.description
+        },
+        {
+          new: true
+        });
+    } catch {
+      throw new NotFoundException('Project to be updated was not found!')
+    }
   }
 
-  async deleteProject(projectId: string): Promise<any> {
-    return this.projectModel.findByIdAndRemove(projectId);
+  async deleteProject(projectId: string): Promise<void> {
+    try {
+      await this.projectModel.findByIdAndRemove(projectId);
+    } catch {
+      throw new NotFoundException('Project to be deleted was not found!')
+    }
   }
 }

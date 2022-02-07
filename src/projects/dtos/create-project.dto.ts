@@ -14,5 +14,9 @@ export class CreateProjectDto {
     })
     description?: string;
 
-    versions: Version[];
+    // @ApiProperty({
+    //     example: 'Versions',
+    //     description: 'Project Versions'
+    // })
+    // versions: Version[];
 }

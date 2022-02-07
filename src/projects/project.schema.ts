@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { ApiProperty } from '@nestjs/swagger';
+import { Version } from "src/versions/version.schema";
 
 export type ProjectDocument = Project & Document;
 
@@ -21,6 +22,13 @@ export class Project {
   })
   @Prop()
   description: string;
+
+  @ApiProperty({
+    example: 'Version',
+    description: 'Version description'
+  })
+  @Prop()
+  versions?: Version[]
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);

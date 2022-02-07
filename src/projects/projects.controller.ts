@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseBoolPipe, Post, Put, Query } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateProjectCommand } from './commands/create-project.command';
 import { DeleteProjectCommand } from './commands/delete-project.command';
@@ -27,8 +27,10 @@ export class ProjectsController {
 
     @Get(':id')
     @ApiOperation({ summary: 'Find a project' })
-    async getProject(@Param('id') id: string): Promise<ProjectDto> {
-        return await this.queryBus.execute(new GetSingleProjectQuery(id));
+    async getProject(
+        @Query('includeVersions', ParseBoolPipe) includeVersions: boolean,
+        @Param('id') id: string): Promise<ProjectDto> {
+        return await this.queryBus.execute(new GetSingleProjectQuery(id, includeVersions));
     }
 
     @Post()
