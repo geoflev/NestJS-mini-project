@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { randomUUID } from "crypto";
+import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Project } from "src/projects/project.schema";
 
 export type VersionDocument = Version & Document;
 
@@ -7,18 +9,16 @@ export type VersionDocument = Version & Document;
 export class Version {
 
     constructor(name: string, description: string){
-        this.id = randomUUID();
         this.name = name;
         this.description = description;
     }
-
-    id: string;
 
     @Prop()
     name: string;
 
     @Prop()
     description: string;
+
 }
 
 export const VersionSchema = SchemaFactory.createForClass(Version);

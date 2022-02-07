@@ -25,7 +25,8 @@ export class CreateVersionCommandHandler implements ICommandHandler<CreateVersio
         const project = await this.projectModel.findById(command.projectId);
         project.versions.push(new Version(command.form.name, command.form.description))
         project.save();
-        return project;
+        //TODO
+        return undefined;
     }
 
 

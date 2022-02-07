@@ -1,6 +1,7 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema , SchemaFactory } from "@nestjs/mongoose";
 import { ApiProperty } from '@nestjs/swagger';
 import { Version } from "src/versions/version.schema";
+import { Document, Schema as MongooseSchema } from 'mongoose';
 
 export type ProjectDocument = Project & Document;
 
@@ -27,7 +28,7 @@ export class Project {
     example: 'Version',
     description: 'Version description'
   })
-  @Prop()
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: Version.name })
   versions?: Version[]
 }
 
