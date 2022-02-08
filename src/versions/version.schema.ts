@@ -6,10 +6,14 @@ export type VersionDocument = Version & Document;
 @Schema()
 export class Version {
 
-    constructor(name: string, description: string){
+    constructor(versionId: string, name: string, description: string){
+        this.versionId = versionId;
         this.name = name;
         this.description = description;
     }
+
+    @Prop()
+    versionId: string;
 
     @Prop()
     name: string;

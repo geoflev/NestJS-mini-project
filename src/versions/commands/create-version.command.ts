@@ -4,6 +4,7 @@ import { Model } from "mongoose";
 import { Project, ProjectDocument } from "src/projects/project.schema";
 import { CreateVersionDto } from "../dtos/create-version.dto";
 import { Version, VersionDocument } from "../version.schema";
+import { v4 as uuidv4 } from 'uuid';
 
 export class CreateVersionCommand {
     readonly form: CreateVersionDto;
@@ -21,9 +22,9 @@ export class CreateVersionCommandHandler implements ICommandHandler<CreateVersio
         @InjectModel(Project.name) private projectModel: Model<ProjectDocument>
     ) { }
 
-    async execute(command: CreateVersionCommand): Promise<Version> {
+    async execute(command: CreateVersionCommand): Promise<Project> {
         const project = await this.projectModel.findById(command.projectId);
-        const version = await this.versionModel.create(new Version(command.form.name, command.form.description))
+        const version = await this.versionModel.create(new Version( uuidv4(), command.form.name, command.form.description))
         project.versions.push(version)
         project.save();
         return project;

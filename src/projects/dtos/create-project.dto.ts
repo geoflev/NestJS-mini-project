@@ -12,10 +12,4 @@ export class CreateProjectDto {
         description: 'The project description'
     })
     description?: string;
-
-    // @ApiProperty({
-    //     example: 'Versions',
-    //     description: 'Project Versions'
-    // })
-    // versions: Version[];
 }

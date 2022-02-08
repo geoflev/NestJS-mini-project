@@ -22,7 +22,7 @@ export class ProjectsService {
   async findById(id: string, includeVersions: boolean): Promise<Project> {
     const project = await this.projectModel.findOne({ id });
     if (!includeVersions) {
-      const projectDest = { id: project.id, name: project.name, description: project.description };
+      const projectDest = { id: project.id, projectId: project.projectId, name: project.name, description: project.description };
       return projectDest;
     }
 
