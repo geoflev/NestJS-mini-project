@@ -1,7 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { randomUUID } from "crypto";
 import { Document, Schema as MongooseSchema } from 'mongoose';
-import { Project } from "src/projects/project.schema";
 
 export type VersionDocument = Version & Document;
 

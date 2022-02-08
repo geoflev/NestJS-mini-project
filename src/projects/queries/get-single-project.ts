@@ -25,7 +25,7 @@ export class GetSingleProjectHandler implements IQueryHandler<GetSingleProjectQu
             return projectDest;
         }
 
-        return project;
+        return project.populate('versions');
     }
 
 

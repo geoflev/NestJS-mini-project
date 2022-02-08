@@ -23,10 +23,10 @@ export class CreateVersionCommandHandler implements ICommandHandler<CreateVersio
 
     async execute(command: CreateVersionCommand): Promise<Version> {
         const project = await this.projectModel.findById(command.projectId);
-        project.versions.push(new Version(command.form.name, command.form.description))
+        const version = await this.versionModel.create(new Version(command.form.name, command.form.description))
+        project.versions.push(version)
         project.save();
-        //TODO
-        return undefined;
+        return project;
     }
 
 

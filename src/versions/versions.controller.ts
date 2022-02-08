@@ -24,11 +24,14 @@ export class VersionsController {
         return await this.queryBus.execute(new GetAllVersionsQuery(projectId));
     }
 
-    // @Get(':id')
-    // @ApiOperation({ summary: 'Get single version' })
-    // async getSingleVersion(@Param('id') id: string): Promise<VersionDto> {
-    //     return await this.queryBus.execute(new GetSingleVersionQuery(id));
-    // }
+    @Get(':projectId/versions/:versionId')
+    @ApiOperation({ summary: 'Get single version' })
+    async getSingleVersion(
+        @Param('projectId') projectId: string,
+        @Param('versionId') versionId: string
+        ): Promise<VersionDto> {
+        return await this.queryBus.execute(new GetSingleVersionQuery(projectId, versionId));
+    }
 
     @Post(':projectId/versions')
     @ApiOperation({ summary: 'Create version' })
@@ -48,9 +51,12 @@ export class VersionsController {
         return await this.commandBus.execute(new UpdateVersionCommand(projectId, versionId, form));
     }
 
-    @Delete(':id')
+    @Delete(':projectId/version/:versionId')
     @ApiOperation({ summary: 'Delete version' })
-    async deleteVersion(@Param('id') id: string): Promise<void> {
-        return await this.commandBus.execute(new DeleteVersionCommand(id));
+    async deleteVersion(
+        @Param('projectId') projectId: string,
+        @Param('versionId') versionId: string
+    ): Promise<void> {
+        return await this.commandBus.execute(new DeleteVersionCommand(projectId, versionId));
     }
 }

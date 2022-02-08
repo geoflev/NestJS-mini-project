@@ -10,6 +10,6 @@ export class GetProjectsQueryHandler implements IQueryHandler<GetAllProjectsQuer
     constructor(@InjectModel(Project.name) private projectModel: Model<ProjectDocument>) { }
 
     async execute(query: GetAllProjectsQuery): Promise<Project[]> {
-        return this.projectModel.find().exec();
+        return this.projectModel.find().populate('versions');
     }
 }

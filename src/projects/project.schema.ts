@@ -7,9 +7,6 @@ export type ProjectDocument = Project & Document;
 
 @Schema()
 export class Project {
-
-  id: string;
-
   @ApiProperty({
     example: 'Project Name',
     description: 'The project name'
@@ -28,7 +25,7 @@ export class Project {
     example: 'Version',
     description: 'Version description'
   })
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: Version.name })
+  @Prop([{ type: MongooseSchema.Types.ObjectId, ref: Version.name }])
   versions?: Version[]
 }
 
