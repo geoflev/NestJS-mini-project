@@ -23,15 +23,11 @@ export class UpdateVersionCommandHandler implements ICommandHandler<UpdateVersio
         @InjectModel(Project.name) private projectModel: Model<ProjectDocument>
     ) { }
 
-    async execute(command: UpdateVersionCommand): Promise<any> {
-        const project = await this.projectModel.findOne({ id: command.projectId });
-        // let version = project.versions.find(version => version.id === command.versionId);
-        // version.name = command.form.name;
-        // version.description = command.form.description;
-        await this.versionModel.findByIdAndUpdate(
-            { id: command.versionId },
+    async execute(command: UpdateVersionCommand): Promise<Version> {
+        const version = await this.versionModel.findByIdAndUpdate(
+             command.versionId ,
             { name: command.form.name, description: command.form.description },
             { new: true })
-        return project;
+        return version;
     }
 }

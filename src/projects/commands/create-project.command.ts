@@ -17,7 +17,7 @@ export class CreateProjectCommandHandler implements ICommandHandler<CreateProjec
     constructor(@InjectModel(Project.name) private projectModel: Model<ProjectDocument>) { }
 
     async execute(command: CreateProjectCommand): Promise<any> {
-        const createdProj = new this.projectModel({projectId: uuidv4(), name: command.form.name, description: command.form.description });
+        const createdProj = new this.projectModel({projectId: uuidv4(), name: command.form.name, description: command.form.description, versions: [] });
 
         return createdProj.save();
     }

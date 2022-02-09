@@ -21,7 +21,15 @@ export class GetSingleProjectHandler implements IQueryHandler<GetSingleProjectQu
     async execute(query: GetSingleProjectQuery): Promise<Project> {
         const project = await this.projectModel.findOne({ id: query.id });
         if (!query.includeVersions) {
-            const projectDest = { id: project.id, projectId: project.projectId, name: project.name, description: project.description };
+            const projectDest = {
+                id: project.id,
+                projectId: project.projectId,
+                name: project.name,
+                description: project.description,
+                versions: query.includeVersions
+                    ? project.versions
+                    : []
+            };
             return projectDest;
         }
 
