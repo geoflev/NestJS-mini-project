@@ -24,7 +24,8 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+NestJS project with MongoDB and Mongoose
+CQRS design pattern
 
 ## Installation
 
