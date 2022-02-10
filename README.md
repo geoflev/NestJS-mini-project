@@ -24,8 +24,8 @@
 
 ## Description
 
-NestJS project with MongoDB and Mongoose
-CQRS design pattern
+- NestJS project with MongoDB and Mongoose
+- CQRS design pattern
 
 ## Installation
 
